@@ -17,7 +17,7 @@ router.get('/:userid', getUserExists, async (req, res) => {
 })
 
 // Get one relic inventory
-router.get('/:userid/:id', getUserExists, async (req, res) => {
+router.get('/:userid/:id', getUserExists, getInventoryExists, async (req, res) => {
   console.log('GET', req.params.userid, req.params.id)
   try {
     const thisInventory = res.user.inventory.filter((item) => item.id === req.params.id)[0]
@@ -51,7 +51,7 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
   }
 })
 
-// Create new empty relic data
+// Create new blank relic dataset
 router.patch('/:userid/create/:id', getUserExists, getInventoryDoesNotExist, async (req, res) => {
   console.log('PATCH', req.params.userid, req.params.id)
   try {
