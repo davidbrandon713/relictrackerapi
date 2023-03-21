@@ -1,39 +1,27 @@
 require('dotenv').config()
 const express = require('express')
-const MongoClient = require('mongodb').MongoClient
 const cors = require('cors')
+const mongoose = require('mongoose')
 
+// Express server
 const app = express()
 const port = 3001
 app.use(cors())
-// app.use(express.json())
+app.use(express.json())
 
-const relics = require('./controllers/relics')
-const inventory = require('./controllers/inventory')
 
-const client = new MongoClient(process.env.mongoURI)
-const dbRelics = client.db('relictrackerapi').collection('relicdata')
-const dbInventory = client.db('relictrackerapi').collection('inventorydata')
+// DB connection
+mongoose.connect(process.env.mongoURI)
+const db = mongoose.connection
+db.on('error', (error) => console.error(error))
+db.once('open', () => console.log('Connected to database'))
 
-app.get('/', (req, res) => {
-  res.send('yo')
-  console.log('yo')
-})
-
-app.get('/index-relics', async (req, res) => {
-  console.log('/index-relics')
-  res.send(relics.getRelics(req, res, dbRelics))
-})
-
-app.get('/index-inventory', async (req, res) => {
-  console.log('/index-inventory')
-  inventory.getInventory(req, res, dbInventory)
-})
-
-app.get('/relics', async (req, res) => { relics.getRelics(req, res, dbRelics) })
-
-app.get('/inventory', async (req, res) => { inventory.getInventory(req, res, dbInventory) })
+// Route controllers
+const relicsRouter = require('./routes/relics')
+app.use('/relics', relicsRouter)
+const userRouter = require('./routes/users')
+app.use('/users', userRouter)
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}.`)
+  console.log(`Server running on port ${port}.`)
 })

@@ -1,0 +1,59 @@
+# Get all relics
+GET http://localhost:3001/relics
+
+###
+# Get one relic
+GET http://localhost:3001/relics/neoN11
+
+###
+# Create one relic
+POST http://localhost:3001/relics
+Content-Type: application/json
+
+{
+  "name": "Neo N11",
+  "id": "neoN11",
+  "drops": [
+    "Nekros Prime Systems",
+    "Oberon Prime Systems",
+    "Forma Blueprint",
+    "Tigris Prime Stock",
+    "Sybaris Prime Blueprint",
+    "Braton Prime Barrel"
+  ]
+}
+
+###
+# Delete one relic
+DELETE http://localhost:3001/relics/neoN11
+
+
+
+
+
+
+# USERS
+
+###
+# Get userData
+GET http://localhost:3001/users/David
+
+
+###
+# Get one relic inventory
+GET http://localhost:3001/users/David/neoN11
+
+
+###
+# Update existing inventory with session drops
+PATCH http://localhost:3001/users/David/update/neoN11
+Content-Type: application/json
+
+{
+  "sessionDrops": [0, 0, 0, 0, 0, 0]
+}
+
+
+###
+# Create new empty relic data
+PATCH http://localhost:3001/users/David/create/neoN11
