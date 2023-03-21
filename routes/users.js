@@ -7,7 +7,7 @@ const User = require('../models/user')
 
 // Get user data
 router.get('/:userid', getUserExists, async (req, res) => {
-  console.log('GET', req.params.userid)
+  console.log('>> GET   ', req.params.userid)
   try {
     const userData = res.user
     res.status(200).json(userData)
@@ -17,8 +17,9 @@ router.get('/:userid', getUserExists, async (req, res) => {
 })
 
 // Get one relic inventory
+//      UNUSED
 router.get('/:userid/:id', getUserExists, getInventoryExists, async (req, res) => {
-  console.log('GET', req.params.userid, req.params.id)
+  console.log('>> GET   ', req.params.userid, req.params.id)
   try {
     const thisInventory = res.user.inventory.filter((item) => item.id === req.params.id)[0]
     res.status(200).json(thisInventory)
@@ -29,12 +30,12 @@ router.get('/:userid/:id', getUserExists, getInventoryExists, async (req, res) =
 
 // Update existing relic data
 router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (req, res) => {
-  console.log('PATCH', req.params.userid, req.params.id)
+  console.log('\n>> PATCH ', req.params.userid, req.params.id, '\n')
   const { sessionDrops } = req.body
   const thisRelic = res.user.inventory.filter((item) => item.id === req.params.id)[0]
   const thisIndex = res.user.inventory.indexOf(thisRelic)
   console.log('Old data: ', thisRelic.data)
-  console.log('New data: ', sessionDrops)
+  console.log('  Update: ', sessionDrops)
   
   try {
     for (let i = 0; i < 6; i++) {
@@ -46,14 +47,16 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
       { inventory: res.user.inventory }, 
       { returnOriginal: false })
     res.json(thisRelic)
+    console.log('New data: ', thisRelic.data, '\n')
   } catch (err) {
     res.status(404).json({ message: err.message })
   }
 })
 
 // Create new blank relic dataset
-router.patch('/:userid/create/:id', getUserExists, getInventoryDoesNotExist, async (req, res) => {
-  console.log('PATCH', req.params.userid, req.params.id)
+//      UNUSED
+router.patch('/:userid/createrelic/:id', getUserExists, getInventoryDoesNotExist, async (req, res) => {
+  console.log('\n>> PATCH ', req.params.userid, req.params.id, '\n')
   try {
     const newRelic = { id: req.params.id, data: [0, 0, 0, 0, 0, 0] }
     res.user.inventory.push(newRelic)
@@ -62,6 +65,7 @@ router.patch('/:userid/create/:id', getUserExists, getInventoryDoesNotExist, asy
       { inventory: res.user.inventory }, 
       { returnOriginal: false })
     res.json({ message: 'Updated inventory' })
+    console.log(newRelic, '\n')
   } catch (err) {
     res.status(501).json({ message: err.message })
   }
@@ -117,7 +121,5 @@ async function getUserExists(req, res, next) {
   res.user = user
   next()
 }
-
-
 
 module.exports = router;

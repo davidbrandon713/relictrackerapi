@@ -6,24 +6,26 @@ const Relic = require('../models/relic')
 // http://localhost:3001/relics/
 
 // Get all relic data
-router.get('/', async (req, res) => {
+router.get('/all/:userid', async (req, res) => {
   try {
     const relics = await Relic.find().sort({name: 1})
     res.status(200).json(relics)
-    console.log(`GET all relic data`)
+    console.log(`\n>> Initialized connection with ${req.params.userid}\n`)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
 })
 
 // Get one relic
+//      UNUSED
 router.get('/:id', getRelicExists, (req, res) => {
   res.json(res.relic)
-  console.log(`GET ${res.relic.name} droplist`)
+  console.log(`>> GET    ${res.relic.name} droplist`)
 })
 
 // Create a relic
-router.post('/', getRelicNonexistant, async (req, res) => {
+//      UNUSED
+router.post('/create/', getRelicNonexistant, async (req, res) => {
   let relic
   if (req.body.name && req.body.drops && req.body.id) {
     relic = new Relic({
@@ -34,7 +36,7 @@ router.post('/', getRelicNonexistant, async (req, res) => {
     try {
       const newRelic = await relic.save()
       res.status(201).json(newRelic)
-      console.log(`POST ${newRelic.name}`)
+      console.log(`>> POST   ${newRelic.name}`)
     } catch (err) {
       res.status(400).json({ message: err.message })
     }
@@ -42,16 +44,18 @@ router.post('/', getRelicNonexistant, async (req, res) => {
 })
 
 // Modify one relic
+//      UNUSED
 router.patch('/:id', async (req, res) => {
   
 })
 
 // Delete one relic
-router.delete('/:id', getRelicExists, async (req, res) => {
+//      UNUSED
+router.delete('/delete/:id', getRelicExists, async (req, res) => {
   try {
     await Relic.deleteOne({ id: res.relic.id })
     res.status(200).json({ message: `Deleted ${res.relic.name}`})
-    console.log(`DELETE ${res.relic.name}`)
+    console.log(`>> DELETE ${res.relic.name}`)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -90,6 +94,5 @@ async function getRelicNonexistant(req, res, next) {
   
   next()
 }
-
 
 module.exports = router;

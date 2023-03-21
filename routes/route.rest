@@ -1,5 +1,5 @@
 # Get all relics
-GET http://localhost:3001/relics
+GET http://localhost:3001/relics/all/David
 
 ###
 # Get one relic
@@ -7,7 +7,7 @@ GET http://localhost:3001/relics/neoN11
 
 ###
 # Create one relic
-POST http://localhost:3001/relics
+POST http://localhost:3001/relics/create
 Content-Type: application/json
 
 {
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 # Delete one relic
-DELETE http://localhost:3001/relics/neoN11
+DELETE http://localhost:3001/relics/delete/neoN11
 
 
 
@@ -46,14 +46,14 @@ GET http://localhost:3001/users/David/neoN11
 
 ###
 # Update existing inventory with session drops
-PATCH http://localhost:3001/users/David/update/neoN11
+PATCH http://localhost:3001/users/David/update/XXXXX
 Content-Type: application/json
 
 {
-  "sessionDrops": [0, 0, 0, 0, 0, 0]
+  "sessionDrops": [-0, -0, -0, -0, -0, -0]
 }
 
 
 ###
 # Create new empty relic data
-PATCH http://localhost:3001/users/David/create/neoN11
+PATCH http://localhost:3001/users/David/createrelic/neoN11
