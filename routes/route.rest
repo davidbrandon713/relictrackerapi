@@ -41,19 +41,25 @@ GET http://localhost:3001/users/David
 
 ###
 # Get one relic inventory
-GET http://localhost:3001/users/David/neoN11
+GET http://localhost:3001/users/David/neoK3
 
 
 ###
 # Update existing inventory with session drops
-PATCH http://localhost:3001/users/David/update/XXXXX
+PATCH http://localhost:3001/users/David/update/neoK3
 Content-Type: application/json
 
 {
-  "sessionDrops": [-0, -0, -0, -0, -0, -0]
+  "sessionDrops": [-0, -0, -0, -0, -0, -0],
+  "bestStreak": 0
 }
 
 
 ###
 # Create new empty relic data
-PATCH http://localhost:3001/users/David/createrelic/neoN11
+PATCH http://localhost:3001/users/David/createrelic
+Content-Type: application/json
+
+{
+  "id": "neoN11"
+}

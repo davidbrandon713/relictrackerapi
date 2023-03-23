@@ -13,7 +13,11 @@ const UserSchema = new mongoose.Schema({
     data: [{
       type: Number,
       required: true,
-    }]
+    }],
+    best: {
+      type: Number,
+      required: true,
+    }
   }],
 }, {
   collection: 'users',

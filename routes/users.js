@@ -31,7 +31,7 @@ router.get('/:userid/:id', getUserExists, getInventoryExists, async (req, res) =
 // Update existing relic data
 router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (req, res) => {
   console.log('\n>> PATCH ', req.params.userid, req.params.id, '\n')
-  const { sessionDrops } = req.body
+  const { sessionDrops, bestStreak } = req.body
   const thisRelic = res.user.inventory.filter((item) => item.id === req.params.id)[0]
   const thisIndex = res.user.inventory.indexOf(thisRelic)
   console.log('Old data: ', thisRelic.data)
@@ -40,6 +40,9 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
   try {
     for (let i = 0; i < 6; i++) {
       thisRelic.data[i] += sessionDrops[i]
+    }
+    if (bestStreak > thisRelic.best) {
+      thisRelic.best = bestStreak
     }
     res.user.inventory.splice(thisIndex, 1, thisRelic)
     await User.findOneAndUpdate(
@@ -55,10 +58,10 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
 
 // Create new blank relic dataset
 //      UNUSED
-router.patch('/:userid/createrelic/:id', getUserExists, getInventoryDoesNotExist, async (req, res) => {
-  console.log('\n>> PATCH ', req.params.userid, req.params.id, '\n')
+router.patch('/:userid/createrelic', getUserExists, getInventoryDoesNotExist, async (req, res) => {
+  console.log('\n>> PATCH ', req.params.userid, req.body.id, '\n')
   try {
-    const newRelic = { id: req.params.id, data: [0, 0, 0, 0, 0, 0] }
+    const newRelic = { id: req.body.id, data: [0, 0, 0, 0, 0, 0], best: 0 }
     res.user.inventory.push(newRelic)
     await User.findOneAndUpdate(
       { uid: req.params.userid }, 
@@ -95,10 +98,10 @@ async function getInventoryDoesNotExist(req, res, next) {
   let match
   try {
     if (res.user) {
-      match = res.user.inventory.filter((item) => item.id === req.params.id)[0]
+      match = res.user.inventory.filter((item) => item.id === req.body.id)[0]
     }
     if (match !== undefined) {
-      return res.status(401).json({ message: `Inventory data already exists for ${req.params.id}` })
+      return res.status(401).json({ message: `Inventory data already exists for ${req.body.id}` })
     }
   } catch (err) {
     return res.status(500).json({ message: err.message })
