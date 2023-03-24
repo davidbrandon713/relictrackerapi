@@ -11,21 +11,21 @@ POST http://localhost:3001/relics/create
 Content-Type: application/json
 
 {
-  "name": "Neo N11",
-  "id": "neoN11",
+  "name": "Meso D3",
+  "id": "mesoD3",
   "drops": [
-    "Nekros Prime Systems",
-    "Oberon Prime Systems",
-    "Forma Blueprint",
-    "Tigris Prime Stock",
-    "Sybaris Prime Blueprint",
-    "Braton Prime Barrel"
+    "Destreza Prime Blade",
+    "Nami Skyla Prime Handle",
+    "Kronen Prime Handle",
+    "Fang Prime Handle",
+    "Braton Prime Stock",
+    "Akbolto Prime Blueprint"
   ]
 }
 
 ###
 # Delete one relic
-DELETE http://localhost:3001/relics/delete/neoN11
+DELETE http://localhost:3001/relics/delete/mesoD3
 
 
 
@@ -41,7 +41,7 @@ GET http://localhost:3001/users/David
 
 ###
 # Get one relic inventory
-GET http://localhost:3001/users/David/neoK3
+GET http://localhost:3001/users/David/mesoD3
 
 
 ###
@@ -61,5 +61,5 @@ PATCH http://localhost:3001/users/David/createrelic
 Content-Type: application/json
 
 {
-  "id": "neoN11"
+  "id": "mesoD3"
 }
