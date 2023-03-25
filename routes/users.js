@@ -6,25 +6,25 @@ const User = require('../models/user')
 // http://localhost:3001/users/
 
 // Get user data
+//      UNUSED
 router.get('/:userid', getUserExists, async (req, res) => {
   console.log('>> GET   ', req.params.userid)
   try {
     const userData = res.user
     res.status(200).json(userData)
   } catch (err) {
-    res.status(501).json({ message: err.message })
+    res.status(500).json({ message: err.message })
   }
 })
 
 // Get one relic inventory
-//      UNUSED
 router.get('/:userid/:id', getUserExists, getInventoryExists, async (req, res) => {
   console.log('>> GET   ', req.params.userid, req.params.id)
   try {
     const thisInventory = res.user.inventory.filter((item) => item.id === req.params.id)[0]
     res.status(200).json(thisInventory)
   } catch (err) {
-    res.status(504).json({ message: err.message })
+    res.status(500).json({ message: err.message })
   }
 })
 
@@ -49,10 +49,10 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
       { uid: req.params.userid }, 
       { inventory: res.user.inventory }, 
       { returnOriginal: false })
-    res.json(thisRelic)
+    res.status(201).json(thisRelic)
     console.log('New data: ', thisRelic.data, '\n')
   } catch (err) {
-    res.status(404).json({ message: err.message })
+    res.status(400).json({ message: err.message })
   }
 })
 
@@ -70,7 +70,7 @@ router.patch('/:userid/createrelic', getUserExists, getInventoryDoesNotExist, as
     res.json({ message: 'Updated inventory' })
     console.log(newRelic, '\n')
   } catch (err) {
-    res.status(501).json({ message: err.message })
+    res.status(500).json({ message: err.message })
   }
 })
 
@@ -85,7 +85,7 @@ async function getInventoryExists(req, res, next) {
       match = res.user.inventory.filter((item) => item.id === req.params.id)[0]
     }
     if (match == undefined) {
-      return res.status(401).json({ message: `Inventory data does not exist for ${req.params.id}` })
+      return res.status(404).json({ message: `Inventory data does not exist for ${req.params.id}` })
     }
   } catch (err) {
     return res.status(500).json({ message: err.message })
@@ -101,7 +101,7 @@ async function getInventoryDoesNotExist(req, res, next) {
       match = res.user.inventory.filter((item) => item.id === req.body.id)[0]
     }
     if (match !== undefined) {
-      return res.status(401).json({ message: `Inventory data already exists for ${req.body.id}` })
+      return res.status(400).json({ message: `Inventory data already exists for ${req.body.id}` })
     }
   } catch (err) {
     return res.status(500).json({ message: err.message })
