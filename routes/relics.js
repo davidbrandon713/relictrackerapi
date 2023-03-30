@@ -26,12 +26,13 @@ router.get('/:id', getRelicExists, (req, res) => {
 // Create a relic
 //      UNUSED
 router.post('/create/', getRelicNonexistant, async (req, res) => {
+  let { name, id, drops } = req.body
   let relic
-  if (req.body.name && req.body.drops && req.body.id) {
+  if (name && id && drops) {
     relic = new Relic({
-      name: req.body.name,
-      drops: req.body.drops,
-      id: req.body.id,
+      name,
+      id,
+      drops,
     })
     try {
       const newRelic = await relic.save()

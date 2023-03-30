@@ -28,7 +28,9 @@ Content-Type: application/json
 DELETE http://localhost:3001/relics/delete/mesoD3
 
 
+###
 
+GET https://api.warframe.market/v1/items/ash_prime_set/orders
 
 
 
