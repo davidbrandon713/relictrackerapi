@@ -20,7 +20,7 @@ router.get('/all/:userid', async (req, res) => {
 //      UNUSED
 router.get('/:id', getRelicExists, (req, res) => {
   res.json(res.relic)
-  console.log(`>> GET    ${res.relic.name} droplist`)
+  console.log(`>> GET ${res.relic.name} droplist`)
 })
 
 // Create a relic
@@ -37,7 +37,7 @@ router.post('/create/', getRelicNonexistant, async (req, res) => {
     try {
       const newRelic = await relic.save()
       res.status(201).json(newRelic)
-      console.log(`>> POST   ${newRelic.name}`)
+      console.log(`>> POST ${newRelic.name}`)
     } catch (err) {
       res.status(400).json({ message: err.message })
     }

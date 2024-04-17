@@ -8,7 +8,7 @@ const User = require('../models/user')
 // Get user data
 //      UNUSED
 router.get('/:userid', getUserExists, async (req, res) => {
-  console.log('>> GET   ', req.params.userid)
+  console.log('>> GET ', req.params.userid)
   try {
     const userData = res.user
     res.status(200).json(userData)
@@ -19,7 +19,7 @@ router.get('/:userid', getUserExists, async (req, res) => {
 
 // Get one relic inventory
 router.get('/:userid/:id', getUserExists, getInventoryExists, async (req, res) => {
-  console.log('>> GET   ', req.params.userid, req.params.id)
+  console.log('>> GET', req.params.userid, req.params.id)
   try {
     const thisInventory = res.user.inventory.filter((item) => item.id === req.params.id)[0]
     res.status(200).json(thisInventory)
@@ -36,8 +36,8 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
   console.log('\n>> PATCH ', userid, id, '\n')
   const thisRelic = inventory.filter((item) => item.id === id)[0]
   const thisIndex = inventory.indexOf(thisRelic)
-  console.log('Old data: ', thisRelic.data)
-  console.log('  Update: ', sessionDrops)
+  console.log('Old data:', thisRelic.data)
+  console.log('  Update:', sessionDrops)
   
   try {
     for (let i = 0; i < 6; i++) {
@@ -52,7 +52,7 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
       { inventory }, 
       { returnOriginal: false })
     res.status(200).json(thisRelic)
-    console.log('New data: ', thisRelic.data, '\n')
+    console.log('New data:', thisRelic.data, '\n')
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
@@ -63,15 +63,15 @@ router.patch('/:userid/update/:id', getUserExists, getInventoryExists, async (re
 router.patch('/:userid/createrelic/:id', getUserExists, getInventoryDoesNotExist, async (req, res) => {
   const { userid, id } = req.params
   const { inventory } = res.user
-  console.log('\n>> PATCH ', userid, id, '\n')
+  console.log('\n>> PATCH', userid, id, '\n')
   try {
-    const newRelic = { id, data: [0, 0, 0, 0, 0, 0], best: 0 }
+    const newRelic = { id, data: [0, 0, 0, 0, 0, 0] }
     res.user.inventory.push(newRelic)
     await User.findOneAndUpdate(
       { uid: userid }, 
       { inventory }, 
       { returnOriginal: false })
-    res.status(201).json({ message: `Created blank relic inventory for ${id}` })
+    res.status(201).json({ message: `Created fresh relic inventory for ${id}` })
     console.log(newRelic, '\n')
   } catch (err) {
     res.status(500).json({ message: err.message })
